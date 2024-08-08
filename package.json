@@ -2,9 +2,6 @@
   "name": "jamstack-subscriptions",
   "version": "0.0.1",
   "main": "index.js",
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop"
-  },
+  "scripts": {},
   "dependencies": {}
 }
