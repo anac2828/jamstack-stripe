@@ -11,10 +11,10 @@ exports.handler = async function (event) {
 
   // TODO create a customer record in supabase
   // Insert a row
-  const res = await supabase.from('User').insert([{ netlifyID, stripeID }]);
+  const { data, error } = await supabase.from('User').insert([{ netlifyID, stripeID }]);
 
   // Did it work?
-  console.log('SUPABASE RES', res);
+  console.log('SUPABASE', data, error);
 
   // sub:free -- subscription type is free
   return {
