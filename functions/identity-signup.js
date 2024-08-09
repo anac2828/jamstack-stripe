@@ -22,6 +22,3 @@ exports.handler = async function (event) {
     body: JSON.stringify({ app_metadata: { roles: ['sub:free'] } }),
   };
 };
-
-// Our standard serverless handler function
-exports.handler = async (event) => {};
