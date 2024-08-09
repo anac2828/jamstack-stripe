@@ -7,11 +7,11 @@ exports.handler = async function (event) {
   console.log('USER', JSON.stringify(user, null, 2));
 
   const netlifyID = user.id;
-  const stripeID = Math.random();
+  // const stripeID = 2;
 
   // TODO create a customer record in supabase
   // Insert a row
-  const { data, error } = await supabase.from('User').insert([{ netlifyID, stripeID }]);
+  const { data, error } = await supabase.from('User').insert([{ netlifyID }]);
 
   // Did it work?
   console.log('SUPABASE', data, error);
