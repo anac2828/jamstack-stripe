@@ -2,7 +2,7 @@ import supabase from './supabase';
 
 // This is serverless function that lets you communication with the funa database
 
-exports.handler = async function (event) {
+export const handler = async function (event) {
   const { user } = JSON.parse(event.body);
   console.log('USER', JSON.stringify(user, null, 2));
 
