@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
-import Stripe from 'stripe';
+import stripe from './stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // SUPABASE CONNECTION
 const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
@@ -14,7 +15,7 @@ export const handler = async function (event) {
   const { user } = JSON.parse(event.body);
   // Stripe created user
   const customer = await stripe.customers.create({ email: user.email });
-  // Stripe subscriptions
+  // signs up new customer with the free subscription
   await stripe.subscriptions.create({
     customer: customer.id,
     items: [
