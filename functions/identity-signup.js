@@ -23,7 +23,6 @@ export const handler = async function (event) {
       },
     ],
   });
-  console.log(customer);
   // User IDs
   const netlifyID = user.id;
   const stripeID = customer.id;
