@@ -1,25 +1,37 @@
 import { createClient } from '@supabase/supabase-js';
+import Stripe from 'stripe';
 
-export const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
-const supabaseKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ZnFjamd0dGtjeWJuaGtlbWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMxNTQxNDcsImV4cCI6MjAzODczMDE0N30.ebBOSQruOMr13e0H0j2x0GUUgd5txbRF4-gBTMIxwdw';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// SUPABASE CONNECTION
+const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// This is serverless function that lets you communication with the funa database
-
+// Signup serverless function called by Netlify when log in button is clicked
 export const handler = async function (event) {
+  // Netlify identity user
   const { user } = JSON.parse(event.body);
+  // Stripe created user
+  const customer = await stripe.customers.create({ email: user.email });
+  // Stripe subscriptions
+  await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [
+      {
+        price: 'price_1PlvkMB7VKHUT2sFjIkIUPlR',
+      },
+    ],
+  });
+  console.log(customer);
+  // User IDs
+  const netlifyID = user.id;
+  const stripeID = customer.id;
+
   console.log('USER', JSON.stringify(user, null, 2));
 
-  const netlifyID = user.id;
-  // const stripeID = 2;
-
-  // TODO create a customer record in supabase
-  // Insert a row
-  const { data, error } = await supabase.from('User').insert([{ netlifyID }]);
-
-  // Did it work?
-  console.log('SUPABASE', data, error);
+  // TODO create a customer record in supabase with customer's Netlify and Stripe ID
+  await supabase.from('User').insert([{ netlifyID, stripeID }]);
 
   // sub:free -- subscription type is free
   return {
