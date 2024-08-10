@@ -5,6 +5,7 @@
   "main": "index.html",
   "scripts": {},
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.1"
+    "@supabase/supabase-js": "^2.45.1",
+    "stripe": "^16.7.0"
   }
 }
