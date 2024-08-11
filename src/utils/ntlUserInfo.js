@@ -34,7 +34,6 @@ async function goToStripePortal(token) {
 
     // window.location.href = link;
   } catch (error) {
-    console.log(link);
     console.log('ERROR', error);
   }
 }

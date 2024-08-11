@@ -1,4 +1,10 @@
-import supabase from './supabase';
+// import supabase from './supabase';
+
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getUserId(matchValue, userId) {
   // Get stripeID
