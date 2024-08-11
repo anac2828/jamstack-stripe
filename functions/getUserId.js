@@ -13,7 +13,7 @@ async function getUserId(matchValue, userId) {
     .select('netlifyID, stripeID')
     .eq(matchValue, userId)
     .single();
-
+  console.log(data);
   if (error) {
     console.error(error);
     throw new Error(error.message);
