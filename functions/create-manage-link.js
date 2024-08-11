@@ -1,5 +1,10 @@
 import stripe from './stripe';
-import getUserId from './getUserId';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+// import getUserId from './getUserId';
 
 // serverless function that creates a stripe customer portal link
 export const handler = async function (_event, context) {
@@ -7,7 +12,21 @@ export const handler = async function (_event, context) {
     //   User info comes from netlify identity
     const { user } = context.clientContext;
     // Get stripe ID
-    const { stripeID } = await getUserId('netlifyID', user.sub);
+    // const { stripeID } = await getUserId('netlifyID', user.sub);
+
+    // Get stripeID
+    const { data, error } = await supabase
+      .from('User')
+      .select('netlifyID, stripeID')
+      .eq('netlifyID', user.sub)
+      .single();
+    console.log(data);
+    if (error) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+
+    const { stripeID } = data;
 
     // Create Stripe portal link
     const link = await stripe.billingPortal.sessions.create({
@@ -28,3 +47,7 @@ export const handler = async function (_event, context) {
     console.error(error);
   }
 };
+
+async function getUserId(matchValue, userId) {
+  return data;
+}
