@@ -6,56 +6,56 @@
     <script
       type="text/javascript"
       src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script defer src="utils/ntlUserInfo.js" type="text/javascript"></script>
+    <!-- <script defer src="utils/ntlUserInfo.js" type="text/javascript"></script> -->
     <title>Log in</title>
   </head>
   <body>
     <h1>Sign Up for Premium Corgi Content</h1>
     <p>Get your subscription today to access the goodest corgos on the internet</p>
     <div data-netlify-identity-button>Login with Netlify Identity</div>
-    <h2>Manage your subscription</h2>
+    <h2>Manage your subscription below</h2>
     <button id="manage-sub">Manage subscription</button>
     <p id="user-name">User</p>
     <pre></pre>
   </body>
-  <script>
-    // user comes from netlify identity
-    async function initUserInfo(user) {
-      if (!user) {
-        user = 'NO USER LOGGED IN';
-        document.querySelector('pre').innerText = user;
-        return;
-      }
-
-      const { roles } = user.app_metadata;
-      // Token to create login to stripe portal
-      const token = await window.netlifyIdentity.currentUser().jwt(true);
-
-      // DISPLAY ROLES
-      document.querySelector('pre').innerText = roles;
-      // DISPLAY USERNAME
-      document.querySelector('#user-name').innerText = user.user_metadata.full_name;
-      // BUTTON TO GO TO STRIPE PORTAL
-      document.querySelector('#manage-sub').addEventListener('click', () => {
-        goToStripePortal(token);
-      });
-    }
-
-    async function goToStripePortal(token) {
-      try {
-        // Makes fetch request to get the netlifyID and stripeID from supabase
-        const res = await fetch('/.netlify/functions/create-manage-link', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const link = await res.json();
-        window.location.href = link;
-      } catch (error) {
-        console.log('ERROR', error);
-      }
-    }
-
-    window.netlifyIdentity.on('init', initUserInfo);
-  </script>
 </html>
+<script>
+  // user comes from netlify identity
+  async function initUserInfo(user) {
+    if (!user) {
+      user = 'NO USER LOGGED IN';
+      document.querySelector('pre').innerText = user;
+      return;
+    }
+
+    const { roles } = user.app_metadata;
+    // Token to create login to stripe portal
+    const token = await window.netlifyIdentity.currentUser().jwt(true);
+
+    // DISPLAY ROLES
+    document.querySelector('pre').innerText = roles;
+    // DISPLAY USERNAME
+    document.querySelector('#user-name').innerText = user.user_metadata.full_name;
+    // BUTTON TO GO TO STRIPE PORTAL
+    document.querySelector('#manage-sub').addEventListener('click', () => {
+      goToStripePortal(token);
+    });
+  }
+
+  async function goToStripePortal(token) {
+    try {
+      // Makes fetch request to get the netlifyID and stripeID from supabase
+      const res = await fetch('/.netlify/functions/create-manage-link', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const link = await res.json();
+      window.location.href = link;
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  }
+
+  window.netlifyIdentity.on('init', initUserInfo);
+</script>
