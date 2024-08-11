@@ -1,25 +1,14 @@
 import stripe from './stripe';
-import supabase from './supabase';
+import getUserId from './getUserId';
 
-// serverless function create a stripe customer portal link
+// serverless function that creates a stripe customer portal link
 export const handler = async function (_event, context) {
   //   User info comes from netlify identity
   const { user } = context.clientContext;
-  console.log('USER', user);
-  // Get stripeID
-  const { data, error } = await supabase
-    .from('User')
-    .select('netlifyID, stripeID')
-    .eq('netlifyID', user.sub)
-    .single();
+  // Get stripe ID
+  const { stripeID } = await getUserId('netlifyID', user.sub);
 
-  if (error) {
-    console.error(error);
-    throw new Error(error.message);
-  }
-
-  const { stripeID } = data;
-
+  // Create Stripe portal link
   const link = await stripe.billingPortal.sessions.create({
     customer: stripeID,
     return_url: process.env.URL,

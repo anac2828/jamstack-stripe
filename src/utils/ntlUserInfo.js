@@ -5,19 +5,22 @@ async function initUserInfo(user) {
     document.querySelector('pre').innerText = user;
     return;
   }
+
   const { roles } = user.app_metadata;
-
+  // Token to create login to stripe portal
   const token = await window.netlifyIdentity.currentUser().jwt(true);
-  // DISPLAY ROLES
-  document.querySelector('pre').innerText = JSON.stringify(roles, null, 2);
 
+  // DISPLAY ROLES
+  document.querySelector('pre').innerText = roles;
+  // DISPLAY USERNAME
+  document.querySelector('#user-name').innerText = user.user_metadata.full_name;
   // BUTTON TO GO TO STRIPE PORTAL
   document.querySelector('#manage-sub').addEventListener('click', () => {
-    gotToStripePortal(token);
+    goToStripePortal(token);
   });
 }
 
-async function gotToStripePortal(token) {
+async function goToStripePortal(token) {
   try {
     // Makes fetch request to get the netlifyID and stripeID from supabase
     const res = await fetch('/.netlify/functions/create-manage-link', {
