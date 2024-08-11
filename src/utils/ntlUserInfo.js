@@ -15,9 +15,9 @@ async function initUserInfo(user) {
   // DISPLAY USERNAME
   document.querySelector('#user-name').innerText = user.user_metadata.full_name;
   // BUTTON TO GO TO STRIPE PORTAL
-  document.querySelector('#manage-sub').addEventListener('click', () => {
+  document.querySelector('#manage-sub').addEventListener('click', async () => {
     console.log('BUTTON');
-    goToStripePortal(token);
+    await goToStripePortal(token);
   });
 }
 
