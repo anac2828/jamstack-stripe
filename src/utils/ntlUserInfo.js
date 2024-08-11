@@ -32,7 +32,7 @@ async function goToStripePortal(token) {
     const link = await res.json();
     console.log('FRONT END LINK', link);
 
-    window.location.href = link;
+    // window.location.href = link;
   } catch (error) {
     console.log(link);
     console.log('ERROR', error);
