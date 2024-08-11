@@ -26,7 +26,7 @@ export const handler = async ({ body, headers }, context) => {
         body: JSON.stringify({ app_metadata: { roles: [role] } }),
       });
     }
-    console.log(response);
+    console.log('RESPONSE', response);
     return {
       statusCode: 200,
       body: JSON.stringify({ received: true }),

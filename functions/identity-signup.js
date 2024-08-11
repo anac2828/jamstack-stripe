@@ -28,8 +28,6 @@ export const handler = async function (event) {
   const netlifyID = user.id;
   const stripeID = customer.id;
 
-  console.log('USER', JSON.stringify(user, null, 2));
-
   // TODO create a customer record in supabase with customer's Netlify and Stripe ID
   await supabase.from('User').insert([{ netlifyID, stripeID }]);
 
