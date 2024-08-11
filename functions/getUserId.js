@@ -1,7 +1,6 @@
 import supabase from './supabase';
 
 async function getUserId(matchValue, userId) {
-  console.log('USER ID', userId);
   // Get stripeID
   const { data, error } = await supabase
     .from('User')

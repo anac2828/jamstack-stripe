@@ -16,6 +16,7 @@ async function initUserInfo(user) {
   document.querySelector('#user-name').innerText = user.user_metadata.full_name;
   // BUTTON TO GO TO STRIPE PORTAL
   document.querySelector('#manage-sub').addEventListener('click', () => {
+    console.log('BUTTON');
     goToStripePortal(token);
   });
 }
@@ -29,6 +30,8 @@ async function goToStripePortal(token) {
     });
 
     const link = await res.json();
+    console.log('FRONT END LINK', link);
+
     window.location.href = link;
   } catch (error) {
     console.log('ERROR', error);

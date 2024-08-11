@@ -6,7 +6,6 @@ export const handler = async function (_event, context) {
   try {
     //   User info comes from netlify identity
     const { user } = context.clientContext;
-    console.log('USER', user);
     // Get stripe ID
     const { stripeID } = await getUserId('netlifyID', user.sub);
 
@@ -16,6 +15,7 @@ export const handler = async function (_event, context) {
       return_url: process.env.URL,
     });
 
+    console.log('SERVER SIDE', link.url);
     if (!link) {
       throw new Error('Something when wrong');
     }
