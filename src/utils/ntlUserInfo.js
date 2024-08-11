@@ -28,11 +28,10 @@ async function goToStripePortal(token) {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res);
-    const link = await res.json();
-    console.log('FRONT END LINK', link);
 
-    // window.location.href = link;
+    const link = await res.json();
+
+    window.location.href = link;
   } catch (error) {
     console.log('ERROR', error);
   }
