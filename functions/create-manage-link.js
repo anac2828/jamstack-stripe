@@ -1,5 +1,7 @@
-import stripe from './stripe';
+// import stripe from './stripe';
+import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -20,7 +22,7 @@ export const handler = async function (_event, context) {
       .select('netlifyID, stripeID')
       .eq('netlifyID', user.sub)
       .single();
-    console.log(data);
+
     if (error) {
       console.error(error);
       throw new Error(error.message);
