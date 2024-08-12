@@ -36,7 +36,6 @@ export const handler = async function (_event, context) {
       return_url: process.env.URL,
     });
 
-    console.log('SERVER SIDE', link.url);
     if (!link) {
       throw new Error('Something when wrong');
     }

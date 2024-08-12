@@ -1,4 +1,4 @@
-import getUserId from './getUserId';
+// import getUserId from './getUserId';
 // import stripe from './stripe';
 import Stripe from 'stripe';
 
@@ -29,7 +29,7 @@ export const handler = async ({ body, headers }, context) => {
         .single();
 
       const { netlifyID } = data;
-
+      console.log(netlifyID);
       if (error) {
         console.error(error);
         throw new Error(error.message);
@@ -44,7 +44,7 @@ export const handler = async ({ body, headers }, context) => {
         body: JSON.stringify({ app_metadata: { roles: [role] } }),
       });
     }
-    console.log('RESPONSE', response);
+    console.log('RESPONSE', response, role);
     return {
       statusCode: 200,
       body: JSON.stringify({ received: true }),
