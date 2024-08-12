@@ -1,8 +1,12 @@
 // import getUserId from './getUserId';
 // import stripe from './stripe';
+import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const supabaseUrl = 'https://rvfqcjgttkcybnhkemjv.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // serverless function that stripe will execute when user updates plan
 export const handler = async ({ body, headers }, context) => {
@@ -14,7 +18,6 @@ export const handler = async ({ body, headers }, context) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    console.log(stripeEvent);
     // Event types are list at: https://docs.stripe.com/customer-management/integrate-customer-portal#webhooks
     if (stripeEvent.type === 'customer.subscription.updated') {
       const subscription = stripeEvent.data.object;
@@ -22,6 +25,7 @@ export const handler = async ({ body, headers }, context) => {
       const role = `sub:${plan.split(' ')[0].toLocaleLowerCase()}`;
       const stripeID = subscription.customer;
 
+      console.log(role, stripeID);
       // const { netlifyID } = await getUserId('stripeID', stripeID);
       // Get stripeID
       const { data, error } = await supabase
@@ -39,7 +43,7 @@ export const handler = async ({ body, headers }, context) => {
 
       //   Access token and netlify url to update roles
       const { identity } = context.clientContext;
-
+      console.log(identity);
       const response = await fetch(`${identity.url}/admin/users/${netlifyID}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${identity.token}` },
