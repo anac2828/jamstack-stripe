@@ -6,9 +6,12 @@ async function initUserInfo(user) {
     return;
   }
 
-  const { roles } = user.app_metadata;
   // Token to create login to stripe portal
   const token = await window.netlifyIdentity.currentUser().jwt(true);
+
+  const parts = token.split('.');
+  const currentUser = JSON.parse(atob(parts[1]));
+  const { roles } = currentUser.app_metadata;
 
   // DISPLAY ROLES
   document.querySelector('pre').innerText = roles;
@@ -16,7 +19,6 @@ async function initUserInfo(user) {
   document.querySelector('#user-name').innerText = user.user_metadata.full_name;
   // BUTTON TO GO TO STRIPE PORTAL
   document.querySelector('#manage-sub').addEventListener('click', async () => {
-    console.log('BUTTON');
     await goToStripePortal(token);
   });
 }

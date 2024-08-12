@@ -25,7 +25,6 @@ export const handler = async ({ body, headers }, context) => {
       const role = `sub:${plan.split(' ')[0].toLocaleLowerCase()}`;
       const stripeID = subscription.customer;
 
-      console.log(role, stripeID);
       // const { netlifyID } = await getUserId('stripeID', stripeID);
       // Get stripeID
       const { data, error } = await supabase
@@ -35,7 +34,7 @@ export const handler = async ({ body, headers }, context) => {
         .single();
 
       const { netlifyID } = data;
-      console.log(netlifyID);
+
       if (error) {
         console.error(error);
         throw new Error(error.message);
@@ -43,13 +42,12 @@ export const handler = async ({ body, headers }, context) => {
 
       //   Access token and netlify url to update roles
       const { identity } = context.clientContext;
-      console.log(identity);
-      const response = await fetch(`${identity.url}/admin/users/${netlifyID}`, {
+
+      await fetch(`${identity.url}/admin/users/${netlifyID}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${identity.token}` },
         body: JSON.stringify({ app_metadata: { roles: [role] } }),
       });
-      console.log('RESPONSE', response, role);
     }
 
     return {
