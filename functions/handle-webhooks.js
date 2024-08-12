@@ -13,6 +13,8 @@ export const handler = async ({ body, headers }, context) => {
       headers['stripe-signature'],
       process.env.STRIPE_WEBHOOK_SECRET
     );
+
+    console.log(stripeEvent);
     // Event types are list at: https://docs.stripe.com/customer-management/integrate-customer-portal#webhooks
     if (stripeEvent.type === 'customer.subscription.updated') {
       const subscription = stripeEvent.data.object;
@@ -43,8 +45,9 @@ export const handler = async ({ body, headers }, context) => {
         headers: { Authorization: `Bearer ${identity.token}` },
         body: JSON.stringify({ app_metadata: { roles: [role] } }),
       });
+      console.log('RESPONSE', response, role);
     }
-    console.log('RESPONSE', response, role);
+
     return {
       statusCode: 200,
       body: JSON.stringify({ received: true }),
